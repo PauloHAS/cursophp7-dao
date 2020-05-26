@@ -3,6 +3,7 @@
 class Sql extends PDO{
 	private $conn;
 
+//conecta automaticamente no banco quando um objeto é gerado
 	public function __construct(){
 
 		$this->conn = new PDO("mysql:dbname=db_testes;host:localhost","root","");
@@ -11,7 +12,7 @@ class Sql extends PDO{
 	private function setParams($statement, $parameters=array()){
 
 		foreach ($parameters as $key => $value) {
-			$this->setParam($key, $value);
+			$this->setParam($statement, $key, $value);
 		
 		}
 	}
@@ -32,7 +33,8 @@ class Sql extends PDO{
 
 	}
 
-	public function select($rawQuery, $params=array()){
+	public function select($rawQuery, $params=array()):array
+	{
 		$stmt = $this->query($rawQuery, $params);
 
 		return $stmt->fetchall(PDO::FETCH_ASSOC);
