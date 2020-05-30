@@ -8,11 +8,11 @@ class Usuario{
 	private $dtcadastro;
 
 	public function getIdusario() {
-		return $this->idusario;
+		return $this->idusuario;
 	}
 
-	public function setIdusario($idusario) {
-		$this->idusario = $idusario;
+	public function setIdusuario($idusuario) {
+		$this->idusuario = $idusuario;
 	}
 
 	public function getNome() {
@@ -92,7 +92,7 @@ class Usuario{
 
 	public function setData($data){
 
-		$this->setIdusario($data['idusuario']);
+		$this->setIdusuario($data['idusuario']);
 		$this->setNome($data['nome']);
 		$this->setSenha($data['senha']);
 		$this->setDtcadastro(new DateTime($data['dtcadastro']));
@@ -125,6 +125,20 @@ class Usuario{
 			':SENHA' =>$this->getSenha(),
 			':ID' => $this->getIdusario()
 		));
+	}
+
+	public function delete(){
+		$sql = new Sql();
+
+		$sql->query("DELETE FROM usuario WHERE idusuario = :ID",array(
+			":ID"=>$this->getIdusario()
+		));
+
+		$this->setIdusuario(0);
+		$this->setNome("");
+		$this->setSenha("");
+		$this->setDtcadastro(new DateTime());
+
 	}
 
 	public function __construct($login = "", $senha = ""){

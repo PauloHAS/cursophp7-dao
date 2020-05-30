@@ -51,4 +51,12 @@ $usuario->update("Henrique", "001122");
 echo $usuario
  */
 
+$usuario = new Usuario();
+
+$usuario ->loadById(9);
+
+$usuario ->delete();
+
+
+echo $usuario;
  ?>
