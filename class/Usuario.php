@@ -47,12 +47,9 @@ class Usuario{
 		));
 
 		if (count($results)>0) {
-			$row = $results[0];
 
-			$this->setIdusario($row['idusuario']);
-			$this->setNome($row['nome']);
-			$this->setSenha($row['senha']);
-			$this->setDtcadastro(new DateTime($row['dtcadastro']));
+			$this->setData($results[0]);
+
 		}
 	}
 //listar todos usuarios ordenados pelo campo nome
@@ -84,18 +81,58 @@ class Usuario{
 		));
 
 		if (count($results)>0) {
-			$row = $results[0];
 
-			$this->setIdusario($row['idusuario']);
-			$this->setNome($row['nome']);
-			$this->setSenha($row['senha']);
-			$this->setDtcadastro(new DateTime($row['dtcadastro']));
+			$this->setData($results[0]);
 
 		}else{
 			throw new Exception("Login ou senha inválidos");
 			
 		}
 	}
+
+	public function setData($data){
+
+		$this->setIdusario($data['idusuario']);
+		$this->setNome($data['nome']);
+		$this->setSenha($data['senha']);
+		$this->setDtcadastro(new DateTime($data['dtcadastro']));
+
+	}
+
+//função para inserir informações no banco de dados
+
+	public function insert(){
+		$sql = new Sql();
+		$results = $sql->select("CALL sp_usuario_insert(:LOGIN, :SENHA)", array(
+			":LOGIN"=>$this->getNome(),
+			":SENHA"=>$this->getSenha()
+
+		));
+
+		if (count($results[0]) > 0) {
+			$this->setData($results[0]);
+
+		}
+	}
+//função para atualizar informações do banco de dados
+	public function update($nome, $senha){
+		$this->setNome($nome);
+		$this->setSenha($senha);
+		$sql = new Sql();
+
+		$sql->query("UPDATE usuario SET nome = :NOME, senha = :SENHA WHERE idusuario = :ID", array(
+			':NOME' =>$this->getNome(),
+			':SENHA' =>$this->getSenha(),
+			':ID' => $this->getIdusario()
+		));
+	}
+
+	public function __construct($login = "", $senha = ""){
+		$this->setNome($login);
+		$this->setSenha($senha);
+
+	}
+
 
 	public function __toString(){
 		return json_encode(array(

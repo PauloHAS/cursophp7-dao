@@ -24,10 +24,31 @@ echo json_encode($lista)
 */
 
 //carrega um usuario usando o login e senha
-
+/*
 $usuario = new Usuario();
 
 $usuario ->login("paulo","12345");
 
 echo $usuario;
+*/
+
+//criando um novo usuario
+/*
+$aluno = new Usuario("Andres", "112233");
+$aluno -> insert();
+
+echo $aluno;
+*/
+
+//alterando um novo usuario
+/*
+$usuario = new Usuario();
+
+$usuario -> loadById(8);
+
+$usuario->update("Henrique", "001122");
+
+echo $usuario
+ */
+
  ?>
